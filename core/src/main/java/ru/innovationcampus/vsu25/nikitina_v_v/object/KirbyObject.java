@@ -1,0 +1,50 @@
+package ru.innovationcampus.vsu25.nikitina_v_v.object;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
+
+import ru.innovationcampus.vsu25.nikitina_v_v.GameSettings;
+
+public class KirbyObject extends GameObject{
+    int livesleft;
+    final int maxHeightOfJump = 200;
+    int speed;
+    boolean jump;
+    int jumpHeight;
+    public KirbyObject(String texturePath, int x, int y, int width, int height,short cBits, World world) {
+        super(texturePath, x, y, width, height, GameSettings.KIRBY_BIT, world);
+        livesleft = 3;
+    }
+    public int getLivesleft() {
+        return livesleft;
+    }
+    private void putInFrame() {
+        if (getY() < 275) {
+            setY(275);
+        }
+        if (getY() <= (height/2)) {
+            setY(height/2);
+        }
+        if (getX() < ( -width / 2f)) {
+            setX(GameSettings.SCREEN_WIDTH);
+        }
+        if (getX() >= (GameSettings.SCREEN_WIDTH + width / 2f)) {
+            setX(0);
+        }
+
+    }
+    public void kick() {
+        body.applyLinearImpulse(new Vector2(0, 2f),new Vector2(getX(), getY()), true);
+    }
+    @Override
+    public void hit() {
+        livesleft -= 1;
+    }
+    @Override
+    public void draw(SpriteBatch batch) {
+        putInFrame();
+        super.draw(batch);
+    }
+    public void move(){}
+}
