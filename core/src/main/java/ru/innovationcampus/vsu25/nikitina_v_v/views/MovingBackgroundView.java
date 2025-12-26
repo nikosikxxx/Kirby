@@ -3,16 +3,15 @@ package ru.innovationcampus.vsu25.nikitina_v_v.views;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import javax.swing.text.View;
-
 import ru.innovationcampus.vsu25.nikitina_v_v.GameSettings;
 
-public class MovingBackgroundView {
+public class MovingBackgroundView extends View {
     Texture texture;
     int texture1X;
     int texture2X;
-    int speed = 2;
+    int speed = 4;
     public MovingBackgroundView(String pathToTexture) {
+        super(0,0);
         texture1X = 0;
         texture2X = GameSettings.SCREEN_WIDTH;
         texture = new Texture(pathToTexture);

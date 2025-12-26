@@ -10,6 +10,12 @@ public class GameSettings {
     public static final float STEP_TIME = 1f / 60;
     public static final int VELOCITY_ITERATIONS = 6;
     public static final int POSITION_ITERATIONS = 6;
+    public static final int BULLET_VELOCITY = 200;
+    public static final int SHOOTING_COOL_DOWN = 400;
+    public static final int BULLET_WIDTH = 15;
+    public static final int BULLET_HEIGHT = 45;
+    public static final short BULLET_BIT = 4;
+    public static final int SHIP_FORCE_RATIO = 10;
 
 
 }
