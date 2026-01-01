@@ -28,13 +28,17 @@ public class GameScreen extends ScreenAdapter {
     KirbyObject kirbyObject;
     ArrayList<BulletObject> bulletArray;
     ButtonView shoot;
+    ButtonView jump;
+    ButtonView pause;
 
     public GameScreen(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
-        kirbyObject = new KirbyObject(KIRBY_IMG_PATH, 250, 275, KIRBY_WIDTH, KIRBY_HEIGHT, KIRBY_BIT, myGdxGame.world);
+        kirbyObject = new KirbyObject(KIRBY_IMG_PATH, 200, 225, KIRBY_WIDTH, KIRBY_HEIGHT, KIRBY_BIT, myGdxGame.world);
         movingBackgroundView = new MovingBackgroundView(GameResources.BACKGROUND_IMG_PATH);
         bulletArray = new ArrayList<>();
-        shoot = new ButtonView(20, 200, 200, 75, GameResources.BUTTON_IMG_PATH);
+        shoot = new ButtonView(50, 5, 150, 150, GameResources.BUTTON_SHOOT_IMG_PATH);
+        jump = new ButtonView(1075, 5, 150,150, GameResources.BUTTON_JUMP_IMG_PATH);
+        pause = new ButtonView(1190, 630, 75,75,GameResources.BUTTON_PAUSE_IMG_PATH);
     }
     public void show() {bulletArray.clear();}
     @Override
@@ -48,12 +52,11 @@ public class GameScreen extends ScreenAdapter {
     }
     private void handleInput() {
         if (Gdx.input.isTouched()) {
-//            kirbyObject.kick();
             myGdxGame.touch = myGdxGame.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
             if (shoot.isHit(myGdxGame.touch.x, myGdxGame.touch.y)){
                 if (kirbyObject.canShoot()) {
                     BulletObject laserBullet = new BulletObject(
-                        kirbyObject.getX()  + kirbyObject.width / 2, kirbyObject.getY(),
+                        kirbyObject.getX()  + kirbyObject.width / 2 + 20, kirbyObject.getY(),
                         GameSettings.BULLET_WIDTH, GameSettings.BULLET_HEIGHT,
                         GameResources.BULLET_IMG_PATH,
                         myGdxGame.world
@@ -63,6 +66,9 @@ public class GameScreen extends ScreenAdapter {
 //            if (myGdxGame.audioManager.isSoundOn) {
 //                myGdxGame.audioManager.shootSound.play(0.2f);
 //            }
+            }
+            if (jump.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
+                kirbyObject.kick();
             }
             kirbyObject.move(myGdxGame.touch);
         }
@@ -79,6 +85,8 @@ public class GameScreen extends ScreenAdapter {
         for (BulletObject bullet : bulletArray) bullet.draw(myGdxGame.batch);
         kirbyObject.draw(myGdxGame.batch);
         shoot.draw(myGdxGame.batch);
+        jump.draw(myGdxGame.batch);
+        pause.draw(myGdxGame.batch);
 
         myGdxGame.batch.end();
     }

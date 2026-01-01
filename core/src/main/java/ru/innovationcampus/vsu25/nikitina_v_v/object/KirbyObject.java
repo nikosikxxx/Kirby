@@ -28,8 +28,8 @@ public class KirbyObject extends GameObject{
     }
 
     private void putInFrame() {
-        if (getY() < 275) {
-            setY(275);
+        if (getY() < 265) {
+            setY(265);
         }
         if (getY() <= (height/2)) {
             setY(height/2);
