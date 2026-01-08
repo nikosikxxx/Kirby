@@ -1,8 +1,9 @@
 package ru.innovationcampus.vsu25.nikitina_v_v.views;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Disposable;
 
-public class View {
+public class View implements Disposable {
     float x;
     float y;
     float width;

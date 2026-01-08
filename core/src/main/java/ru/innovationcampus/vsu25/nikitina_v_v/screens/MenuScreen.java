@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import ru.innovationcampus.vsu25.nikitina_v_v.GameResources;
 import ru.innovationcampus.vsu25.nikitina_v_v.MyGdxGame;
 import ru.innovationcampus.vsu25.nikitina_v_v.views.ButtonView;
+import ru.innovationcampus.vsu25.nikitina_v_v.views.ImageView;
 import ru.innovationcampus.vsu25.nikitina_v_v.views.MovingBackgroundView;
 
 public class MenuScreen extends ScreenAdapter {
@@ -17,13 +18,15 @@ public class MenuScreen extends ScreenAdapter {
     ButtonView startButtonView;
     ButtonView settingsButtonView;
     ButtonView exitButtonView;
+    ImageView tittleView;
 
     public MenuScreen(MyGdxGame myGdxGame) {
-//        this.myGdxGame = myGdxGame;
-//        backgroundView = new MovingBackgroundView(GameResources.BACKGROUND_IMG_PATH);
-//        startButtonView = new ButtonView(140,646,440,70,myGdxGame.pauseButtonFont, GameResources.BUTTON_LONG_IMG_PATH, "start");
-//        settingsButtonView = new ButtonView(140, 551, 440, 70, myGdxGame.pauseButtonFont, GameResources.BUTTON_LONG_IMG_PATH, "settings");
-//        exitButtonView = new ButtonView(140, 456, 440, 70, myGdxGame.pauseButtonFont, GameResources.BUTTON_LONG_IMG_PATH, "exit");
+        this.myGdxGame = myGdxGame;
+        backgroundView = new MovingBackgroundView(GameResources.MENU_BACKGROUND_IMG_PATH);
+        tittleView = new ImageView(400,450, 500,250,GameResources.TITTLE_IMG_PATH);
+        startButtonView = new ButtonView(350,310,600,150, GameResources.BUTTON_START_IMG_PATH);
+        settingsButtonView = new ButtonView(350, 180, 600, 150,  GameResources.BUTTON_SETTINGS_IMG_PATH);
+        exitButtonView = new ButtonView(350, 50, 600, 150,  GameResources.EXIT_IMG_PATH);
     }
     @Override
     public void render(float delta) {
@@ -35,6 +38,7 @@ public class MenuScreen extends ScreenAdapter {
         handleInput();
 
         backgroundView.draw(myGdxGame.batch);
+        tittleView.draw(myGdxGame.batch);
         exitButtonView.draw(myGdxGame.batch);
         settingsButtonView.draw(myGdxGame.batch);
         startButtonView.draw(myGdxGame.batch);

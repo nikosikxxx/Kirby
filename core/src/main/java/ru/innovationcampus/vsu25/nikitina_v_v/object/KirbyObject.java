@@ -9,15 +9,17 @@ import com.badlogic.gdx.utils.TimeUtils;
 import ru.innovationcampus.vsu25.nikitina_v_v.GameSettings;
 
 public class KirbyObject extends GameObject{
-    int livesleft;
+    int livesLeft;
     long lastShotTime;
+    private  boolean wasHit;
 
     public KirbyObject(String texturePath, int x, int y, int width, int height,short cBits, World world) {
         super(texturePath, x, y, width, height, GameSettings.KIRBY_BIT, world);
-        livesleft = 3;
+
+        livesLeft = 4;
     }
-    public int getLivesleft() {
-        return livesleft;
+    public int getLivesLeft() {
+        return livesLeft;
     }
     public boolean canShoot(){
         if(TimeUtils.millis() - lastShotTime >= GameSettings.SHOOTING_COOL_DOWN){
@@ -28,11 +30,12 @@ public class KirbyObject extends GameObject{
     }
 
     private void putInFrame() {
+
+        if (getY() > (375)) {
+            setY(375);
+        }
         if (getY() < 265) {
             setY(265);
-        }
-        if (getY() <= (height/2)) {
-            setY(height/2);
         }
         if (getX() < ( -width / 2f)) {
             setX(GameSettings.SCREEN_WIDTH);
@@ -46,12 +49,20 @@ public class KirbyObject extends GameObject{
         float fx = (vector3.x - getX()) * GameSettings.SHIP_FORCE_RATIO;
         float fy = (vector3.y - getY()) * GameSettings.SHIP_FORCE_RATIO;
     }
-        public void kick() {
-        body.applyLinearImpulse(new Vector2(0, 2f),new Vector2(getX(), getY()), true);
+        public void jump() {
+        body.setLinearVelocity(new Vector2( 0, GameSettings.KIRBY_VELOCITY));
+            body.setBullet(true);
+            wasHit = false;
+//        body.applyLinearImpulse(new Vector2(0, 20f),new Vector2(getX(), getY()), true);
     }
+    public boolean isAlive() {
+        return livesLeft > 0;
+    }
+
     @Override
     public void hit() {
-        livesleft -= 1;
+        livesLeft -= 1;
+        wasHit = true;
     }
     @Override
     public void draw(SpriteBatch batch) {
