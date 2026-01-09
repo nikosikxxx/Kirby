@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -41,7 +42,7 @@ public class GameObject {
     }
     public void hit(){}
     private Body createBody(float x, float y, World world) {
-        BodyDef def = new BodyDef();
+        BodyDef def = new BodyDef();;
 
         def.type = BodyDef.BodyType.DynamicBody;
         def.fixedRotation = true;
@@ -56,6 +57,10 @@ public class GameObject {
         fixtureDef.density = 0.1f;
         fixtureDef.friction = 1;
         fixtureDef.filter.categoryBits = cBits;
+
+        Fixture fixture = body.createFixture(fixtureDef);
+        fixture.setUserData(this);
+        circleShape.dispose();
 
         body.setTransform(x*SCALE, y*SCALE,0);
         return body;

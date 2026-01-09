@@ -22,10 +22,10 @@ public class LiveView extends View{
     }
     @Override
     public void draw(SpriteBatch batch) {
-        batch.draw(texture1,500, 650, 250, 50);
-        if (leftLives>0) batch.draw(texture, 499.4f, 650, 60, 50);
-        if (leftLives>1) batch.draw(texture,563 ,650, 60, 50);
-        if (leftLives>2) batch.draw(texture, 627,650, 60, 50);
-        if (leftLives>3) batch.draw(texture, 690,650, 60, 50);
+        batch.draw(texture1,500, 635, 250, 50);
+        if (leftLives>0) batch.draw(texture, 499.4f, 635, 60, 50);
+        if (leftLives>1) batch.draw(texture,563 ,635, 60, 50);
+        if (leftLives>2) batch.draw(texture, 627,635, 60, 50);
+        if (leftLives>3) batch.draw(texture, 690,635, 60, 50);
     }
 }

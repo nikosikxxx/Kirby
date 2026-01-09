@@ -1,4 +1,40 @@
 package ru.innovationcampus.vsu25.nikitina_v_v.managers;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+
+import ru.innovationcampus.vsu25.nikitina_v_v.GameResources;
+
 public class AudioManager {
+    public Music backgroundMusic;
+    public Sound shootSound;
+    public Sound jumpSound;
+    public Sound explosionSound;
+    public boolean isSoundOn;
+    public boolean isMusicOn;
+    public AudioManager() {
+        isMusicOn = true;
+        isSoundOn = true;
+
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(GameResources.BACKGROUND_MUSIC_PATH));
+        shootSound = Gdx.audio.newSound(Gdx.files.internal(GameResources.SHOOT_SOUND_PATH));
+        explosionSound = Gdx.audio.newSound(Gdx.files.internal(GameResources.DESTROY_STAR_SOUND_PATH));
+
+        backgroundMusic.setVolume(0.04f);
+        backgroundMusic.setLooping(true);
+
+        updateSoundFlag();
+        updateMusicFlag();
+    }
+
+    public void updateMusicFlag() {
+        isMusicOn = MemoryManager.loadIsMusicOn();
+        if (isMusicOn) backgroundMusic.play();
+        else backgroundMusic.stop();
+    }
+    public void updateSoundFlag() {
+        isSoundOn = MemoryManager.loadIsSoundOn();
+
+    }
 }

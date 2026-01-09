@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import ru.innovationcampus.vsu25.nikitina_v_v.managers.AudioManager;
 import ru.innovationcampus.vsu25.nikitina_v_v.screens.GameScreen;
 import ru.innovationcampus.vsu25.nikitina_v_v.screens.MenuScreen;
+import ru.innovationcampus.vsu25.nikitina_v_v.screens.SettingsScreen;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class MyGdxGame extends Game {
@@ -30,10 +31,12 @@ public class MyGdxGame extends Game {
     public OrthographicCamera camera;
     public GameScreen gameScreen;
     public MenuScreen menuScreen;
+    public SettingsScreen settingsScreen;
     public World world;
     float accumulator = 0;
     public Vector3 touch;
     public BitmapFont commonWhiteFont;
+    public BitmapFont bigWhiteFont;
     public AudioManager audioManager;
 
     public void stepWorld() {
@@ -53,11 +56,13 @@ public class MyGdxGame extends Game {
         world = new World(new Vector2(0,-9.8f),true);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
-        commonWhiteFont = FontBuilder.generate(27, Color.WHITE, GameResources.FONTS);
+        commonWhiteFont = FontBuilder.generate(32, Color.WHITE, GameResources.FONTS);
+        bigWhiteFont = FontBuilder.generate(34, Color.WHITE, GameResources.FONTS);
         audioManager = new AudioManager();
 
         gameScreen = new GameScreen(this);
         menuScreen = new MenuScreen(this);
+        settingsScreen = new SettingsScreen(this);
         setScreen(menuScreen);
     }
 

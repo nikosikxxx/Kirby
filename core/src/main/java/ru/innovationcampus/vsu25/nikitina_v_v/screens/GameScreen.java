@@ -1,6 +1,5 @@
 package ru.innovationcampus.vsu25.nikitina_v_v.screens;
 
-import static com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable.draw;
 import static ru.innovationcampus.vsu25.nikitina_v_v.GameResources.KIRBY_IMG_PATH;
 import static ru.innovationcampus.vsu25.nikitina_v_v.GameSettings.KIRBY_BIT;
 import static ru.innovationcampus.vsu25.nikitina_v_v.GameSettings.KIRBY_HEIGHT;
@@ -22,9 +21,13 @@ import ru.innovationcampus.vsu25.nikitina_v_v.GameState;
 import ru.innovationcampus.vsu25.nikitina_v_v.MyGdxGame;
 import ru.innovationcampus.vsu25.nikitina_v_v.managers.ContactManager;
 import ru.innovationcampus.vsu25.nikitina_v_v.managers.MemoryManager;
+import ru.innovationcampus.vsu25.nikitina_v_v.object.CloudObject;
 import ru.innovationcampus.vsu25.nikitina_v_v.object.BulletObject;
+import ru.innovationcampus.vsu25.nikitina_v_v.object.IceCreamObject;
 import ru.innovationcampus.vsu25.nikitina_v_v.object.KirbyObject;
+import ru.innovationcampus.vsu25.nikitina_v_v.object.StarObject;
 import ru.innovationcampus.vsu25.nikitina_v_v.views.ButtonView;
+import ru.innovationcampus.vsu25.nikitina_v_v.views.ImageView;
 import ru.innovationcampus.vsu25.nikitina_v_v.views.LiveView;
 import ru.innovationcampus.vsu25.nikitina_v_v.views.MovingBackgroundView;
 import ru.innovationcampus.vsu25.nikitina_v_v.views.RecordsListView;
@@ -35,15 +38,21 @@ public class GameScreen extends ScreenAdapter {
     GameSession gameSession;
     MovingBackgroundView movingBackgroundView;
     KirbyObject kirbyObject;
+    ArrayList<IceCreamObject> iceCreamArray;
+    ArrayList<CloudObject> cloudArray;
     ArrayList<BulletObject> bulletArray;
+    ArrayList<StarObject> starArray;
     ButtonView shoot;
     ButtonView jump;
     ButtonView pause;
     ButtonView homeButton;
-    ButtonView homeButton2;
     ButtonView continueButton;
+    ButtonView restartButton;
     LiveView liveView;
+    ImageView fullPinkOut;
+    ImageView pinkOut;
     TextView scoretextView;
+    TextView recordText;
     ContactManager contactManager;
     RecordsListView recordsListView;
 
@@ -52,30 +61,44 @@ public class GameScreen extends ScreenAdapter {
         gameSession = new GameSession();
         movingBackgroundView = new MovingBackgroundView(GameResources.BACKGROUND_IMG_PATH);
         bulletArray = new ArrayList<>();
+        iceCreamArray = new ArrayList<>();
+        cloudArray = new ArrayList<>();
+        starArray = new ArrayList<>();
         shoot = new ButtonView(50, 5, 150, 150, GameResources.BUTTON_SHOOT_IMG_PATH);
         jump = new ButtonView(1075, 5, 150,150, GameResources.BUTTON_JUMP_IMG_PATH);
         pause = new ButtonView(1190, 630, 75,75,GameResources.BUTTON_PAUSE_IMG_PATH);
-        homeButton = new ButtonView(1190, 630, 75,75,GameResources.EXIT_IMG_PATH);
-        homeButton2 = new ButtonView(500, 300, 75,75,GameResources.EXIT_IMG_PATH);
-        continueButton = new ButtonView(800, 500, 75,75,GameResources.BUTTON_START_IMG_PATH);
+        homeButton = new ButtonView(40, 250, 600,150,GameResources.BUTTON_HOME_IMG_PATH);
+        continueButton = new ButtonView(660, 250, 600,150,GameResources.BUTTON_CONTINUE_IMG_PATH);
+        restartButton = new ButtonView(660,250,600,150, GameResources.BUTTON_RESTART_IMG_PATH);
+        fullPinkOut = new ImageView(0,0,GameSettings.SCREEN_WIDTH, GameSettings.SCREEN_HEIGHT, GameResources.FULL_PINK_OUT_IMG_PATH);
+        pinkOut = new ImageView(0, 20, SCREEN_WIDTH, SCREEN_HEIGHT, GameResources.PINK_OUT_IMG_PATH);
         liveView = new LiveView(600, 700);
         contactManager = new ContactManager(myGdxGame.world);
-        scoretextView = new TextView(myGdxGame.commonWhiteFont, 50, 1215);
-        recordsListView = new RecordsListView(myGdxGame.commonWhiteFont, 690, 742);
+        scoretextView = new TextView(myGdxGame.commonWhiteFont, 50, 640);
+        recordText = new TextView(myGdxGame.bigWhiteFont, 525,670, "Records");
+        recordsListView = new RecordsListView(myGdxGame.commonWhiteFont, 640, 600);
     }
     public void show() {restartGame();}
     private void restartGame() {
-//        for (int i = 0; i< trashArray.size(); i++) {
-//            myGdxGame.world.destroyBody(trashArray.get(i).body);
-//            trashArray.remove(i--);
-//        }
-//        for (int i = 0; i< superTrashArray.size(); i++) {
-//            myGdxGame.world.destroyBody(superTrashArray.get(i).body);
-//            superTrashArray.remove(i--);
-//        }
+        for (int i = 0; i< iceCreamArray.size(); i++) {
+            myGdxGame.world.destroyBody(iceCreamArray.get(i).body);
+            iceCreamArray.remove(i--);
+        }
+        for (int i = 0; i< cloudArray.size(); i++) {
+            myGdxGame.world.destroyBody(cloudArray.get(i).body);
+            cloudArray.remove(i--);
+        }
+        for (int i = 0; i< starArray.size(); i++) {
+            myGdxGame.world.destroyBody(starArray.get(i).body);
+            starArray.remove(i--);
+        }
         if (kirbyObject != null) {
             myGdxGame.world.destroyBody(kirbyObject.body);
         }
+        gameSession.score = 0;
+        gameSession.destructedTrashNumber = 0;
+        scoretextView.setText("Score:" + gameSession.getScore());
+
         kirbyObject = new KirbyObject(KIRBY_IMG_PATH, 200, 225, KIRBY_WIDTH, KIRBY_HEIGHT, KIRBY_BIT, myGdxGame.world);
         bulletArray.clear();
         gameSession.startGame();
@@ -84,13 +107,29 @@ public class GameScreen extends ScreenAdapter {
     public void render(float delta) {
         handleInput();
         if (gameSession.state == GameState.PLAYING){
+            if (gameSession.shouldSpawnIceCream()) {
+                IceCreamObject iceCreamObject = new IceCreamObject(GameResources.ICE_CREAM_IMG_PATH,
+                    100, 75, myGdxGame.world);
+                iceCreamArray.add(iceCreamObject);
+            }
+            if (gameSession.shouldSpawnCloud()) {
+                CloudObject cloudObject = new CloudObject(GameResources.CLOUD_IMG_PATH,
+                    175, 225, myGdxGame.world);
+                cloudArray.add(cloudObject);
+            }
+            if (gameSession.shouldSpawnStar()) {
+                StarObject starObject = new StarObject(GameResources.STAR_IMG_PATH,
+                    100, 75, myGdxGame.world);
+                starArray.add(starObject);
+            }
             if (!kirbyObject.isAlive()) {
                 gameSession.endGame();
                 recordsListView.setRecords(MemoryManager.loadRecordsTable());
             }
-
-
         updateBullets();
+        updateIceCream();
+        updateCloud();
+        updateStar();
         movingBackgroundView.move();
         if (gameSession.state == GameState.PLAYING) {
             gameSession.updateScore();
@@ -113,12 +152,13 @@ public class GameScreen extends ScreenAdapter {
                     if (shoot.isHit(myGdxGame.touch.x, myGdxGame.touch.y)){
                         if (kirbyObject.canShoot()) {
                             BulletObject laserBullet = new BulletObject(
-                                GameResources.BULLET_IMG_PATH,kirbyObject.getX()  + kirbyObject.width / 2 + 20, kirbyObject.getY(),
+                                GameResources.BULLET_IMG_PATH,kirbyObject.getX()  + kirbyObject.width / 2 + 20, kirbyObject.getY() - 20,
                                 GameSettings.BULLET_WIDTH, GameSettings.BULLET_HEIGHT,
 
                                 myGdxGame.world
                             );
                             bulletArray.add(laserBullet);
+                            if (myGdxGame.audioManager.isSoundOn) myGdxGame.audioManager.shootSound.play(0.1f);
                         }
 //            if (myGdxGame.audioManager.isSoundOn) {
 //                myGdxGame.audioManager.shootSound.play(0.2f);
@@ -135,10 +175,13 @@ public class GameScreen extends ScreenAdapter {
                     }
                     if (homeButton.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
                         myGdxGame.setScreen(myGdxGame.menuScreen);
-                    }
+                    }break;
                 case ENDED:
-                    if (homeButton2.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
+                    if (homeButton.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
                         myGdxGame.setScreen(myGdxGame.menuScreen);
+                    }
+                    if(restartButton.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
+                        restartGame();
                     }
                     break;
         }
@@ -153,7 +196,11 @@ public class GameScreen extends ScreenAdapter {
 
 
         movingBackgroundView.draw(myGdxGame.batch);
+        pinkOut.draw(myGdxGame.batch);
         for (BulletObject bullet : bulletArray) bullet.draw(myGdxGame.batch);
+        for (IceCreamObject iceCreamObject : iceCreamArray) iceCreamObject.draw(myGdxGame.batch);
+        for (CloudObject cloudObject : cloudArray) cloudObject.draw(myGdxGame.batch);
+        for (StarObject starObject : starArray) starObject.draw(myGdxGame.batch);
         kirbyObject.draw(myGdxGame.batch);
         shoot.draw(myGdxGame.batch);
         jump.draw(myGdxGame.batch);
@@ -163,11 +210,15 @@ public class GameScreen extends ScreenAdapter {
         liveView.draw(myGdxGame.batch);
 
         if (gameSession.state == GameState.PAUSED) {
+            fullPinkOut.draw(myGdxGame.batch);
             homeButton.draw(myGdxGame.batch);
             continueButton.draw(myGdxGame.batch);
         } else if (gameSession.state == GameState.ENDED) {
+            fullPinkOut.draw(myGdxGame.batch);
             recordsListView.draw(myGdxGame.batch);
-            homeButton2.draw(myGdxGame.batch);
+            homeButton.draw(myGdxGame.batch);
+            restartButton.draw(myGdxGame.batch);
+            recordText.draw(myGdxGame.batch);
 
         }
 
@@ -181,9 +232,36 @@ public class GameScreen extends ScreenAdapter {
             }
         }
     }
+    private void updateIceCream() {
+        for (int i = 0; i < iceCreamArray.size(); i++) {
+            if (!iceCreamArray.get(i).isInFrame() || !iceCreamArray.get(i).isAlive()) {
+                myGdxGame.world.destroyBody(iceCreamArray.get(i).body);
+                iceCreamArray.remove(i--);
+            }
+        }
+    }
+    private void updateCloud() {
+        for (int i = 0; i < cloudArray.size(); i++) {
+            if (!cloudArray.get(i).isInFrame() || !cloudArray.get(i).isAlive()) {
+                myGdxGame.world.destroyBody(cloudArray.get(i).body);
+                cloudArray.remove(i--);
+            }
+        }
+    }
+    private void updateStar() {
+        for (int i = 0; i < starArray.size(); i++) {
+            if (!starArray.get(i).isInFrame() || !starArray.get(i).isAlive()) {
+                gameSession.destructionRegistration();
+                if (myGdxGame.audioManager.isSoundOn) myGdxGame.audioManager.explosionSound.play(0.4f);
+                myGdxGame.world.destroyBody(starArray.get(i).body);
+                starArray.remove(i--);
+            }
+        }
+    }
 
     @Override
     public void dispose() {
+        kirbyObject.dispose();
     }
 
 }

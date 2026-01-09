@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import ru.innovationcampus.vsu25.nikitina_v_v.managers.MemoryManager;
 
 public class GameSession {
-    long nextTrashSpawnTime;
-    long nextSuperTrashSpawnTime;
+    long nextIceCreamSpawnTime;
+    long nextCloudSpawnTime;
+    long nextStarSpawnTime;
     long sessionStartTime;
     long pauseStartTime;
-    private int score;
-    int destructedTrashNumber;
+    public int score;
+    public int destructedTrashNumber;
     public GameState state;
 
     public GameSession() {}
@@ -43,8 +44,12 @@ public class GameSession {
     public void startGame() {
         sessionStartTime = TimeUtils.millis();
         state = GameState.PLAYING;
-        nextTrashSpawnTime = sessionStartTime + (long)
-            (GameSettings.STARTING_TRASH_APPEARANCE_COOL_DOWN * getTrashPeriodCoolDown());
+        nextIceCreamSpawnTime = sessionStartTime +
+            (long)(GameSettings.STARTING_ICE_CREAM_COOL_DOWN * getTrashPeriodCoolDown());
+        nextCloudSpawnTime = sessionStartTime +
+            (long)(GameSettings.STARTING_CLOUD_COOL_DOWN * getTrashPeriodCoolDown());
+        nextStarSpawnTime = sessionStartTime +
+            (long)(GameSettings.STARTING_STAR_COOL_DOWN * getTrashPeriodCoolDown());
     }
     public void pauseGame(){
         state = GameState.PAUSED;
@@ -54,25 +59,29 @@ public class GameSession {
         state = GameState.PLAYING;
         sessionStartTime += TimeUtils.millis() - pauseStartTime;
     }
-
-    public boolean shouldSpawnTrash() {
-        if (nextTrashSpawnTime <= TimeUtils.millis()) {
-            nextTrashSpawnTime = TimeUtils.millis() + (long) (GameSettings.STARTING_TRASH_APPEARANCE_COOL_DOWN * getTrashPeriodCoolDown());
+    public boolean shouldSpawnIceCream() {
+        if (nextIceCreamSpawnTime <= TimeUtils.millis()) {
+            nextIceCreamSpawnTime = (TimeUtils.millis() + (long) (GameSettings.STARTING_ICE_CREAM_COOL_DOWN * getTrashPeriodCoolDown()))+5000;
             return true;
         }
         return false;
     }
-    public boolean shouldSpawnSuperTrash() {
-        if (nextSuperTrashSpawnTime <= TimeUtils.millis()) {
-            nextSuperTrashSpawnTime = TimeUtils.millis() + (long) (GameSettings.STARTING_TRASH_APPEARANCE_COOL_DOWN * getTrashPeriodCoolDown());
+    public boolean shouldSpawnCloud() {
+        if (nextCloudSpawnTime <= TimeUtils.millis()) {
+            nextCloudSpawnTime = (TimeUtils.millis() + (long) (GameSettings.STARTING_CLOUD_COOL_DOWN * getTrashPeriodCoolDown()))+5000;
             return true;
         }
         return false;
     }
-
-
+    public boolean shouldSpawnStar() {
+        if (nextStarSpawnTime <= TimeUtils.millis()) {
+            nextStarSpawnTime = (TimeUtils.millis() + (long) (GameSettings.STARTING_STAR_COOL_DOWN * getTrashPeriodCoolDown()))+5000;
+            return true;
+        }
+        return false;
+    }
     private float getTrashPeriodCoolDown() {
-        return (float) Math.exp(-0.001 * (TimeUtils.millis() - sessionStartTime) / 1000);
+        return (float) Math.exp(-0.001 * (TimeUtils.millis() - sessionStartTime) / 5000);
     }
 
 }
