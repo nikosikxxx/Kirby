@@ -10,6 +10,7 @@ public class AudioManager {
     public Music backgroundMusic;
     public Sound shootSound;
     public Sound jumpSound;
+    public Sound cloud;
     public Sound explosionSound;
     public boolean isSoundOn;
     public boolean isMusicOn;
@@ -20,6 +21,7 @@ public class AudioManager {
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(GameResources.BACKGROUND_MUSIC_PATH));
         shootSound = Gdx.audio.newSound(Gdx.files.internal(GameResources.SHOOT_SOUND_PATH));
         explosionSound = Gdx.audio.newSound(Gdx.files.internal(GameResources.DESTROY_STAR_SOUND_PATH));
+        cloud = Gdx.audio.newSound(Gdx.files.internal(GameResources.DESTROY_CLOUD_SOUND_PATH));
 
         backgroundMusic.setVolume(0.04f);
         backgroundMusic.setLooping(true);

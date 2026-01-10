@@ -244,6 +244,7 @@ public class GameScreen extends ScreenAdapter {
         for (int i = 0; i < cloudArray.size(); i++) {
             if (!cloudArray.get(i).isInFrame() || !cloudArray.get(i).isAlive()) {
                 myGdxGame.world.destroyBody(cloudArray.get(i).body);
+                if (myGdxGame.audioManager.isSoundOn) myGdxGame.audioManager.cloud.play(0.4f);
                 cloudArray.remove(i--);
             }
         }

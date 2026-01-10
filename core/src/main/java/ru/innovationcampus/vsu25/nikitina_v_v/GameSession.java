@@ -75,7 +75,7 @@ public class GameSession {
     }
     public boolean shouldSpawnStar() {
         if (nextStarSpawnTime <= TimeUtils.millis()) {
-            nextStarSpawnTime = (TimeUtils.millis() + (long) (GameSettings.STARTING_STAR_COOL_DOWN * getTrashPeriodCoolDown()))+5000;
+            nextStarSpawnTime = (TimeUtils.millis() + (long) (GameSettings.STARTING_STAR_COOL_DOWN * getTrashPeriodCoolDown()))+4000;
             return true;
         }
         return false;

@@ -27,13 +27,13 @@ public class ContactManager {
                 int cDef = fixA.getFilterData().categoryBits;
                 int cDef2 = fixB.getFilterData().categoryBits;
 
-                if (cDef == GameSettings.OBSTACLES_BIT && cDef2 == GameSettings.KIRBY_BIT
-                    || cDef2 == GameSettings.OBSTACLES_BIT && cDef == GameSettings.KIRBY_BIT) {
+                if (cDef == GameSettings.ICE_CREAM_BIT && cDef2 == GameSettings.KIRBY_BIT
+                    || cDef2 == GameSettings.ICE_CREAM_BIT && cDef == GameSettings.KIRBY_BIT) {
                     ((GameObject) fixA.getUserData()).hit();
                     ((GameObject) fixB.getUserData()).hit();
                 }
-                if (cDef == GameSettings.OBSTACLES_BIT && cDef2 == GameSettings.BULLET_BIT
-                    || cDef2 == GameSettings.OBSTACLES_BIT && cDef == GameSettings.BULLET_BIT) {
+                if (cDef == GameSettings.ICE_CREAM_BIT && cDef2 == GameSettings.BULLET_BIT
+                    || cDef2 == GameSettings.ICE_CREAM_BIT && cDef == GameSettings.BULLET_BIT) {
                     if (fixA.getUserData() instanceof BulletObject) {
                         ((GameObject) fixA.getUserData()).hit();
                     }
@@ -41,21 +41,12 @@ public class ContactManager {
                         ((GameObject) fixB.getUserData()).hit();
                     }
                 }
-                if (cDef == GameSettings.STARS_BIT && cDef2 == GameSettings.KIRBY_BIT
-                    || cDef2 == GameSettings.STARS_BIT && cDef == GameSettings.KIRBY_BIT
-                    || cDef == GameSettings.STARS_BIT && cDef2 == GameSettings.BULLET_BIT
-                    || cDef2 == GameSettings.STARS_BIT && cDef == GameSettings.BULLET_BIT) {
+                if (cDef == GameSettings.OBSTACLES_BIT && cDef2 == GameSettings.KIRBY_BIT
+                    || cDef2 == GameSettings.OBSTACLES_BIT && cDef == GameSettings.KIRBY_BIT
+                    || cDef == GameSettings.OBSTACLES_BIT && cDef2 == GameSettings.BULLET_BIT
+                    || cDef2 == GameSettings.OBSTACLES_BIT && cDef == GameSettings.BULLET_BIT) {
                     ((GameObject) fixA.getUserData()).hit();
                     ((GameObject) fixB.getUserData()).hit();
-                }
-                if (cDef == GameSettings.OBSTACLES_BIT && cDef2 == GameSettings.STARS_BIT
-                    || cDef2 == GameSettings.OBSTACLES_BIT && cDef == GameSettings.STARS_BIT) {
-                    if (fixA.getUserData() instanceof StarObject) {
-                        ((GameObject) fixA.getUserData()).hit();
-                    }
-                    if (fixB.getUserData() instanceof StarObject) {
-                        ((GameObject) fixB.getUserData()).hit();
-                    }
                 }
             }
 

@@ -10,8 +10,8 @@ public class StarObject extends GameObject{
     int livesLeft;
     public StarObject(String texturePath, int width, int height, World world) {
         super(texturePath, GameSettings.SCREEN_WIDTH + width,
-            235, width, height, GameSettings.STARS_BIT, world);
-        body.setLinearVelocity(new Vector2(-GameSettings.OBSTACLES_VELOCITY-1,0 ));
+            235, width, height, GameSettings.OBSTACLES_BIT, world);
+        body.setLinearVelocity(new Vector2(-GameSettings.OBSTACLES_VELOCITY-2,0 ));
         body.setGravityScale(0f);
         body.setType(BodyDef.BodyType.KinematicBody);
         livesLeft = 1;

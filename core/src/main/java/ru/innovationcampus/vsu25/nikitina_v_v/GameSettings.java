@@ -5,8 +5,8 @@ public class GameSettings {
     public static final int SCREEN_HEIGHT = 720;
     public static final float SCALE = 0.05f;
     public static final short KIRBY_BIT = 2;
-    public static final short OBSTACLES_BIT = 1;
-    public static final short STARS_BIT = 3;
+    public static final short OBSTACLES_BIT =  1;
+    public static final short ICE_CREAM_BIT = 3;
     public static final short OBSTACLES_VELOCITY = 15;
     public static final int KIRBY_WIDTH = 240;
     public static final int KIRBY_HEIGHT = 150;

@@ -28,6 +28,7 @@ public class GameResources {
     public static final String JUMP_SOUND_PATH = "sounds/jump.mp3";
     public static final String SHOOT_SOUND_PATH = "sounds/shoot.mp3";
     public static final String DESTROY_STAR_SOUND_PATH = "sounds/destroyStar.mp3";
+    public static final String DESTROY_CLOUD_SOUND_PATH = "sounds/cloud.mp3";
 
 
 }
