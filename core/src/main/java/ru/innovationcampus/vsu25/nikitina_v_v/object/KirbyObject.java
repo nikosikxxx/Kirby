@@ -52,8 +52,7 @@ public class KirbyObject extends GameObject{
         public void jump() {
         body.setLinearVelocity(new Vector2( 0, GameSettings.KIRBY_VELOCITY));
             body.setBullet(true);
-//        body.applyLinearImpulse(new Vector2(0, 20f),new Vector2(getX(), getY()), true);
-    }
+        }
 
 
     @Override

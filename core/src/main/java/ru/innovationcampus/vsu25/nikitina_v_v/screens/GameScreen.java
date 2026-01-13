@@ -75,8 +75,8 @@ public class GameScreen extends ScreenAdapter {
         liveView = new LiveView(600, 700);
         contactManager = new ContactManager(myGdxGame.world);
         scoretextView = new TextView(myGdxGame.commonWhiteFont, 50, 640);
-        recordText = new TextView(myGdxGame.bigWhiteFont, 525,670, "Records");
-        recordsListView = new RecordsListView(myGdxGame.commonWhiteFont, 640, 600);
+        recordText = new TextView(myGdxGame.bigWhiteFont, 525,650, "Records");
+        recordsListView = new RecordsListView(myGdxGame.commonWhiteFont, 800, 580);
     }
     public void show() {restartGame();}
     private void restartGame() {

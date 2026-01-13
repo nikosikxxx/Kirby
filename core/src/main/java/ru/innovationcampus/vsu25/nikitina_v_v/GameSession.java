@@ -68,7 +68,8 @@ public class GameSession {
     }
     public boolean shouldSpawnCloud() {
         if (nextCloudSpawnTime <= TimeUtils.millis()) {
-            nextCloudSpawnTime = (TimeUtils.millis() + (long) (GameSettings.STARTING_CLOUD_COOL_DOWN * getTrashPeriodCoolDown()))+5000;
+            nextCloudSpawnTime = (TimeUtils.millis() + (long) (GameSettings.STARTING_CLOUD_COOL_DOWN
+                * getTrashPeriodCoolDown()))+5000;
             return true;
         }
         return false;
